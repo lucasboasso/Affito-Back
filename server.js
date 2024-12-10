@@ -4,24 +4,30 @@ const dotenv = require("dotenv");
 const cors = require("cors");
 const connectDB = require("./config/db");
 
-//load env variables
-dotenv.config({ path: "./config/config.env" });
+dotenv.config({ path: "./config/.env" });
 
-//connect to database
-connectDB();
+const testSingleton = async () => {
+
+    console.log("Llamada 1");
+    await connectDB();
+
+    console.log("Llamada 2");
+    await connectDB();
+
+    console.log("Llamada 3");
+    await connectDB();
+};
+
+testSingleton();
 
 const app = express();
 
-//body parser
 app.use(express.json());
 
-//enable cors
 app.use(cors());
 
-//set static folder
 app.use(express.static(path.join(__dirname, "public")));
 
-//routes
 app.use("/usuarios", require("./routes/usuarios"));
 app.use("/api/v1/localidades", require("./routes/localidades"));
 app.use("/api/v1/domicilios", require("./routes/domicilios"));
